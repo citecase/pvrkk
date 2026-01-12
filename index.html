@@ -95,7 +95,7 @@
             color: #888;
         }
 
-        /* Breadcrumbs Fixed typo here */
+        /* Breadcrumbs */
         .breadcrumbs {
             display: flex;
             justify-content: center;
@@ -654,7 +654,8 @@
             }
             if (node.children) {
                 node.children.forEach(child => {
-                    buildFlatTree(child, [...path, { name: node.name, children: node.children }]);
+                    // Update: path objects now include spouse for the header display
+                    buildFlatTree(child, [...path, { name: node.name, spouse: node.spouse, children: node.children }]);
                 });
             }
         }
@@ -803,7 +804,8 @@
         branchPassInput.onkeydown = (e) => { if(e.key === 'Enter') verifyBranchPasscode(); };
 
         function executeNav(person) {
-            history.push({ name: person.name, children: person.children });
+            // Update: history objects now include spouse
+            history.push({ name: person.name, spouse: person.spouse, children: person.children });
             render();
         }
 
@@ -847,7 +849,7 @@
         function render() {
             viewContainer.innerHTML = '';
             updateBreadcrumbs();
-            const current = history.length > 0 ? history[history.length - 1] : { name: 'PVRKK', children: familyData.children };
+            const current = history.length > 0 ? history[history.length - 1] : { name: 'PVRKK', spouse: '', children: familyData.children };
             const screen = document.createElement('div');
             screen.className = 'screen active';
             if (history.length > 0) {
@@ -856,9 +858,12 @@
                 backBtn.textContent = '← Back';
                 backBtn.onclick = goBack;
                 screen.appendChild(backBtn);
+                
+                // Update: Include spouse in header display
+                const spouseText = current.spouse && current.spouse.trim() !== "" ? ` & ${current.spouse}` : '';
                 const info = document.createElement('div');
                 info.className = 'parent-info';
-                info.innerHTML = `<h2>Children of</h2><span>${current.name}</span>`;
+                info.innerHTML = `<h2>Children of</h2><span>${current.name}${spouseText}</span>`;
                 screen.appendChild(info);
             }
             const grid = document.createElement('div');
