@@ -36,7 +36,6 @@
             color: #1a1a1a;
         }
 
-        /* Search Styles */
         .search-container {
             max-width: 400px;
             margin: 10px auto;
@@ -78,10 +77,6 @@
             border-bottom: 1px solid #f0f0f0;
             cursor: pointer;
             transition: background 0.2s;
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
         }
 
         .search-result-item:hover {
@@ -258,12 +253,6 @@
             cursor: default;
         }
 
-        .card.no-children:hover {
-            transform: none;
-            box-shadow: none;
-            border-color: #e0e0e0;
-        }
-
         .card.locked::before {
             content: '🔒';
             position: absolute;
@@ -341,21 +330,21 @@
 
         .feedback-btn {
             position: fixed;
-            bottom: 20px;
+            top: 20px; /* Moved from bottom */
             right: 20px;
             background: #333;
             color: white;
-            padding: 12px 20px;
+            padding: 10px 18px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 99;
+            z-index: 1001; /* Higher than header */
             transition: transform 0.2s, background 0.2s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .feedback-btn:hover {
@@ -371,10 +360,10 @@
                 font-size: 22px;
             }
             .feedback-btn {
-                bottom: 15px;
+                top: 15px;
                 right: 15px;
-                padding: 10px 16px;
-                font-size: 12px;
+                padding: 8px 14px;
+                font-size: 11px;
             }
         }
     </style>
@@ -390,6 +379,11 @@
     </div>
 
     <div id="main-content" style="display:none;">
+        <!-- Feedback Button moved to Top Right -->
+        <a href="https://tally.so/r/EklqrL" target="_blank" class="feedback-btn" id="feedback-link">
+            <span>💬 Feedback</span>
+        </a>
+
         <div class="header">
             <h1>PVRKK Family Tree</h1>
             <div class="search-container">
@@ -401,10 +395,6 @@
         <div class="container">
             <div id="view-container"></div>
         </div>
-
-        <a href="https://tally.so/r/EklqrL" target="_blank" class="feedback-btn" id="feedback-link">
-            <span>💬 Feedback</span>
-        </a>
     </div>
 
     <div id="modal-overlay" class="modal-overlay">
@@ -506,8 +496,7 @@
                                 name: "Sumana Premananda Prabhu", spouse: "Premananda Prabhu",
                                 children: [
                                     { name: "Sunanda", spouse: "Anupam", children: [{ name: "Lijitha" }, { name: "Ruchika" }] },
-                                    { name: "Prakash", spouse: "Shweta", children: [{ name: "Tejeshwar" }] },
-                                    { name: "Sudheer", spouse: "Niveditha", children: [{ name: "Tanmay" }] }
+                                    { name: "Prakash", spouse: "Shweta", children: [{ name: "Tejeshwar" }] }
                                 ]
                             },
                             {
@@ -617,8 +606,7 @@
                                 name: "Premanand", spouse: "Sumana",
                                 children: [
                                     { name: "Sunanda", spouse: "Anupam Jha", children: [{ name: "Lijitha" }, { name: "Ruchika" }] },
-                                    { name: "Prakash Prabhu", spouse: "Swetha", children: [{ name: "Tejeshwar" }] },
-                                    { name: "Sudheer", spouse: "Niveditha", children: [{ name: "Tanmay" }] }
+                                    { name: "Prakash Prabhu", spouse: "Swetha", children: [{ name: "Tejeshwar" }] }
                                 ]
                             },
                             { name: "Balachandra Prabhu", spouse: "Chandrakala", children: [] }
@@ -647,7 +635,6 @@
         let pendingNav = null;
         let flatTree = [];
 
-        // Build flat index for searching
         function buildFlatTree(node, path = []) {
             if (node.name !== "PVRKK") {
                 flatTree.push({
@@ -666,7 +653,6 @@
 
         buildFlatTree(familyData);
 
-        // Access Controls
         mainPassInput.addEventListener('input', () => {
             const val = mainPassInput.value.toLowerCase();
             if (val === 'pvrkk') {
@@ -676,7 +662,6 @@
             }
         });
 
-        // Search Logic
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
             if (term.length < 2) {
@@ -694,14 +679,11 @@
                 matches.forEach(person => {
                     const item = document.createElement('div');
                     item.className = 'search-result-item';
-                    
                     const pText = person.path.map(p => p.name).join(' › ');
-                    
                     item.innerHTML = `
                         <span class="result-name">${person.name}${person.spouse ? ` & ${person.spouse}` : ''}</span>
                         <span class="result-path">${pText}</span>
                     `;
-                    
                     item.onclick = () => {
                         jumpToPerson(person);
                         searchInput.value = '';
@@ -715,7 +697,6 @@
             }
         });
 
-        // Close search when clicking outside
         document.addEventListener('click', (e) => {
             if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
                 searchResults.style.display = 'none';
@@ -723,8 +704,6 @@
         });
 
         function jumpToPerson(person) {
-            // Find the point where security is needed
-            // Krishna and Ramachandra are open.
             const restrictedPath = person.path.some(p => 
                 p.name !== "PVRKK" && 
                 p.name !== "Ramachandra Kamath" && 
@@ -732,10 +711,6 @@
             );
 
             if (restrictedPath && !isBranchUnlocked) {
-                // If it's a deep branch, we need to unlock it.
-                // For simplicity, we trigger the unlock for the final destination parent.
-                pendingNav = person; // Hack: verifyBranchPasscode uses executeNav which pushes pendingNav.children
-                // In this case executeNav needs to handle the whole history set
                 openModalForJump(person);
             } else {
                 executeJump(person);
@@ -748,14 +723,13 @@
             branchPassInput.value = '';
             document.getElementById('branch-error').style.display = 'none';
             branchPassInput.focus();
-            // Override the default confirm button for this specific jump
+            const originalConfirm = document.querySelector('.btn-confirm').onclick;
             document.querySelector('.btn-confirm').onclick = () => {
                 if (branchPassInput.value === "2026") {
                     isBranchUnlocked = true;
                     closeModal();
                     executeJump(person);
-                    // restore original
-                    document.querySelector('.btn-confirm').onclick = verifyBranchPasscode;
+                    document.querySelector('.btn-confirm').onclick = originalConfirm;
                 } else {
                     document.getElementById('branch-error').style.display = 'block';
                 }
@@ -763,7 +737,6 @@
         }
 
         function executeJump(person) {
-            // Reconstruct the history stack (excluding root PVRKK)
             history = person.path.filter(p => p.name !== "PVRKK");
             render();
         }
@@ -774,7 +747,6 @@
             root.className = 'breadcrumb-item';
             root.textContent = 'PVRKK';
             breadcrumbContainer.appendChild(root);
-
             history.forEach((entry) => {
                 const item = document.createElement('span');
                 item.className = 'breadcrumb-item';
@@ -787,7 +759,6 @@
             const isInsideKrishnaLinage = history.some(h => h.name === "Krishna Kamath");
             const isKrishnaHimself = person.name === "Krishna Kamath";
             const isRamachandraHimself = person.name === "Ramachandra Kamath";
-
             if (isBranchUnlocked || isInsideKrishnaLinage || isKrishnaHimself || isRamachandraHimself) {
                 executeNav(person);
             } else {
@@ -831,30 +802,24 @@
         function createCard(person) {
             const card = document.createElement('div');
             card.className = 'card';
-            
             const hasChildren = person.children && person.children.length > 0;
             if (!hasChildren) card.classList.add('no-children');
-
             const isInsideKrishnaLinage = history.some(h => h.name === "Krishna Kamath");
             const isKrishnaHimself = person.name === "Krishna Kamath";
             const isRamachandraHimself = person.name === "Ramachandra Kamath";
-            
             if (!isInsideKrishnaLinage && !isKrishnaHimself && !isRamachandraHimself && hasChildren && !isBranchUnlocked) {
                 card.classList.add('locked');
             }
-
             const name = document.createElement('div');
             name.className = 'name';
             name.textContent = person.name;
             card.appendChild(name);
-
             if (person.spouse && person.spouse.trim() !== "") {
                 const spouse = document.createElement('div');
                 spouse.className = 'spouse';
                 spouse.textContent = `& ${person.spouse}`;
                 card.appendChild(spouse);
             }
-
             if (hasChildren) {
                 const icon = document.createElement('div');
                 icon.className = 'has-children-icon';
@@ -862,7 +827,6 @@
                 card.appendChild(icon);
                 card.onclick = () => checkAccess(person);
             }
-
             return card;
         }
 
@@ -875,32 +839,25 @@
         function render() {
             viewContainer.innerHTML = '';
             updateBreadcrumbs();
-
             const current = history.length > 0 ? history[history.length - 1] : { name: 'PVRKK', children: familyData.children };
-
             const screen = document.createElement('div');
             screen.className = 'screen active';
-
             if (history.length > 0) {
                 const backBtn = document.createElement('button');
                 backBtn.className = 'back-btn';
                 backBtn.textContent = '← Back';
                 backBtn.onclick = goBack;
                 screen.appendChild(backBtn);
-
                 const info = document.createElement('div');
                 info.className = 'parent-info';
                 info.innerHTML = `<h2>Children of</h2><span>${current.name}</span>`;
                 screen.appendChild(info);
             }
-
             const grid = document.createElement('div');
             grid.className = 'child-grid';
-
             current.children.forEach(child => {
                 grid.appendChild(createCard(child));
             });
-
             screen.appendChild(grid);
             viewContainer.appendChild(screen);
             window.scrollTo({ top: 0, behavior: 'smooth' });
