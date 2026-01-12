@@ -36,6 +36,7 @@
             color: #1a1a1a;
         }
 
+        /* Search Styles */
         .search-container {
             max-width: 400px;
             margin: 10px auto;
@@ -94,6 +95,7 @@
             color: #888;
         }
 
+        /* Breadcrumbs Fixed typo here */
         .breadcrumbs {
             display: flex;
             justify-content: center;
@@ -330,7 +332,7 @@
 
         .feedback-btn {
             position: fixed;
-            top: 20px; /* Moved from bottom */
+            top: 20px;
             right: 20px;
             background: #333;
             color: white;
@@ -340,7 +342,7 @@
             font-weight: 600;
             font-size: 13px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1001; /* Higher than header */
+            z-index: 1001;
             transition: transform 0.2s, background 0.2s;
             display: flex;
             align-items: center;
@@ -353,6 +355,12 @@
         }
 
         @media (max-width: 600px) {
+            .header {
+                padding-top: 60px; /* Space for feedback button */
+            }
+            .header h1 {
+                font-size: 20px;
+            }
             .card {
                 width: 100%;
             }
@@ -360,9 +368,10 @@
                 font-size: 22px;
             }
             .feedback-btn {
+                position: absolute;
                 top: 15px;
                 right: 15px;
-                padding: 8px 14px;
+                padding: 6px 12px;
                 font-size: 11px;
             }
         }
@@ -379,12 +388,11 @@
     </div>
 
     <div id="main-content" style="display:none;">
-        <!-- Feedback Button moved to Top Right -->
-        <a href="https://tally.so/r/EklqrL" target="_blank" class="feedback-btn" id="feedback-link">
-            <span>💬 Feedback</span>
-        </a>
-
         <div class="header">
+            <a href="https://tally.so/r/EklqrL" target="_blank" class="feedback-btn" id="feedback-link">
+                <span>💬 Feedback</span>
+            </a>
+
             <h1>PVRKK Family Tree</h1>
             <div class="search-container">
                 <input type="text" id="global-search" class="search-input" placeholder="Search family member..." autocomplete="off">
