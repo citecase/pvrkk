@@ -4,416 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PVRKK Family Tree</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* General Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         body {
-            background: #f8f9fa;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
         }
 
-        /* Passcode Screen Styles */
-        #login-screen {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: #f0f2f5;
-        }
-
-        .login-card {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .login-card h2 {
-            margin-bottom: 20px;
-            color: #1a1a1a;
-            font-size: 22px;
-        }
-
-        .login-card p {
-            color: #666;
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
-
-        .passcode-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-bottom: 20px;
-            outline: none;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-
-        .passcode-input:focus {
-            border-color: #333;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: #333;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .login-btn:hover {
-            background: #555;
-        }
-
-        #error-msg {
-            color: #dc3545;
-            font-size: 13px;
-            margin-top: 10px;
-            display: none;
-        }
-
-        /* Main Content Styles */
-        #main-content {
-            display: none;
-        }
-
-        .header {
-            background: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #1a1a1a;
-        }
-
-        /* Search Bar Styles */
-        .search-container {
-            max-width: 400px;
-            margin: 10px auto;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .search-input:focus {
-            border-color: #333;
-        }
-
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            margin-top: 8px;
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-            z-index: 1000;
-            text-align: left;
-        }
-
-        .search-result-item {
-            padding: 12px 20px;
-            border-bottom: 1px solid #f0f0f0;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .search-result-item:hover {
-            background: #f8f9fa;
-        }
-
-        .result-name {
-            font-weight: 600;
-            display: block;
-            font-size: 14px;
-        }
-
-        .result-path {
-            font-size: 11px;
-            color: #888;
-        }
-
-        /* Breadcrumb Styles */
-        .breadcrumbs {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #666;
-            margin-top: 5px;
-            flex-wrap: wrap;
-        }
-
-        .breadcrumb-item::after {
-            content: '›';
-            margin-left: 8px;
-        }
-
-        .breadcrumb-item:last-child::after {
-            content: '';
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .screen {
-            display: none;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Navigation Buttons */
-        .back-btn {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            margin-bottom: 30px;
-            transition: background 0.2s;
-        }
-
-        .back-btn:hover {
-            background: #555;
-        }
-
-        .parent-info {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 12px;
-            border: 1px solid #eee;
-        }
-
-        .parent-info h2 {
-            font-size: 20px;
-            color: #666;
-            font-weight: 400;
-        }
-
-        .parent-info span {
-            display: block;
-            font-size: 28px;
-            color: #333;
-            font-weight: 700;
-            margin-top: 5px;
-        }
-
-        /* Family Grid Layout */
-        .child-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .card {
-            background: white;
-            padding: 25px 20px;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            text-align: center;
-            cursor: pointer;
+        .card-transition {
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 120px;
-            width: 280px;
         }
 
-        .card:hover {
-            border-color: #333;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
-        .card.no-children {
-            cursor: default;
-        }
-
-        .card .name {
-            font-weight: 700;
-            font-size: 18px;
-            margin-bottom: 5px;
-            color: #1a1a1a;
-        }
-
-        .card .spouse {
-            font-size: 14px;
-            color: #777;
-            font-style: italic;
-        }
-
-        .has-children-icon {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            font-size: 12px;
-            color: #ccc;
-        }
-
-        /* Feedback Link */
-        .feedback-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #333;
-            color: white;
-            padding: 10px 18px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 13px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1001;
-            transition: transform 0.2s, background 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .feedback-btn:hover {
-            background: #555;
-            transform: scale(1.05);
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 600px) {
-            .header {
-                padding-top: 60px;
-            }
-            .header h1 {
-                font-size: 20px;
-            }
-            .card {
-                width: 100%;
-            }
-            .parent-info span {
-                font-size: 22px;
-            }
-            .feedback-btn {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                padding: 6px 12px;
-                font-size: 11px;
-            }
+        .card-transition:hover {
+            transform: translateY(-2px);
+            border-color: #94a3b8;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-<body>
+<body class="text-slate-800">
 
-    <!-- Passcode Section: Enter 'pvrkk' to unlock -->
-    <div id="login-screen">
-        <div class="login-card">
-            <h2>PVRKK Family Access</h2>
-            <p>Please enter the passcode to view the family tree.</p>
-            <input type="password" id="passcode-input" class="passcode-input" placeholder="•••••">
-            <button onclick="checkPasscode()" class="login-btn">Unlock</button>
-            <p id="error-msg">Incorrect passcode. Please try again.</p>
+    <!-- Access Control Section -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center p-6 bg-slate-100">
+        <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full text-center">
+            <div class="mb-6 inline-flex items-center justify-center w-16 h-16 bg-slate-800 text-white rounded-full text-2xl font-bold">
+                P
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">PVRKK Family Access</h2>
+            <p class="text-slate-500 mb-8 text-sm">Enter the secure passcode to explore the lineage.</p>
+            <input type="password" id="passcode-input" class="w-full px-4 py-3 rounded-lg border border-slate-200 mb-4 text-center focus:ring-2 focus:ring-slate-400 outline-none transition-all tracking-widest" placeholder="•••••">
+            <button onclick="checkPasscode()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-lg transition-colors">Unlock Tree</button>
+            <p id="error-msg" class="text-red-500 text-xs mt-4 hidden font-medium">Incorrect passcode. Please try again.</p>
         </div>
     </div>
 
-    <!-- Application Section -->
-    <div id="main-content">
-        <div class="header">
-            <a href="https://tally.so/r/EklqrL" target="_blank" class="feedback-btn" id="feedback-link">
-                <span>💬 Feedback</span>
-            </a>
-
-            <h1>PVRKK Family Tree</h1>
-            <div class="search-container">
-                <input type="text" id="global-search" class="search-input" placeholder="Search family member..." autocomplete="off">
-                <div id="search-results" class="search-results"></div>
+    <!-- Main Tree Application -->
+    <div id="main-content" class="hidden min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white border-b border-slate-200 sticky top-0 z-50 px-6 py-4">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <h1 class="text-xl font-bold text-slate-900 tracking-tight cursor-pointer" onclick="history = []; render();">PVRKK Family Tree</h1>
+                    <a href="https://tally.so/r/EklqrL" target="_blank" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1 rounded-full font-medium transition-colors flex items-center gap-1">
+                        <span>💬</span> Feedback
+                    </a>
+                </div>
+                
+                <div class="relative w-full max-w-md">
+                    <input type="text" id="global-search" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-full text-sm focus:bg-white focus:ring-2 focus:ring-slate-300 outline-none transition-all" placeholder="Search family member...">
+                    <div id="search-results" class="absolute top-full left-0 right-0 bg-white mt-2 rounded-xl shadow-2xl border border-slate-100 max-h-60 overflow-y-auto hidden z-[60]"></div>
+                </div>
             </div>
-            <div id="breadcrumbs" class="breadcrumbs"></div>
-        </div>
-        <div class="container">
-            <div id="view-container"></div>
-        </div>
+            <div id="breadcrumbs" class="max-w-7xl mx-auto mt-3 flex flex-wrap gap-2 text-xs text-slate-400 font-medium uppercase tracking-wider"></div>
+        </header>
+
+        <main class="flex-1 max-w-7xl mx-auto w-full p-6 space-y-12">
+            <div id="view-container" class="min-h-[400px]">
+                <!-- Interactive grid renders here -->
+            </div>
+        </main>
+
+        <footer class="p-8 border-t border-slate-200 text-center">
+            <p id="total-members-text" class="text-slate-400 text-sm font-semibold uppercase tracking-widest"></p>
+        </footer>
     </div>
 
     <script>
-        // Authentication Logic: Passcode 'pvrkk'
-        function checkPasscode() {
-            const input = document.getElementById('passcode-input').value;
-            const error = document.getElementById('error-msg');
-            
-            if (input === 'pvrkk') {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                render(); // Start tree render
-            } else {
-                error.style.display = 'block';
-                document.getElementById('passcode-input').value = '';
-            }
-        }
+        // Authentication Code: pvrkk
 
-        // Enter key handling
-        document.getElementById('passcode-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                checkPasscode();
-            }
-        });
-
-        // Family Data Structure (Full lineage)
         const familyData = {
             name: "PVRKK",
             children: [{
@@ -467,11 +127,11 @@
                             },
                             {
                                 name: "Jayasree Vadhyar", spouse: "Ars Vadhyar",
-                                children: [{ name: "Manju Vadhyar", spouse: "Rohit Prabhu", children: [{ name: "Harsch" }] }, { name: "Sindhu Vadhyar" }]
+                                children: [{ name: "Manju Vadhyar", spouse: " रोहित Prabhu", children: [{ name: "Harsch" }] }, { name: "Sindhu Vadhyar" }]
                             },
                             {
                                 name: "Sumana Premananda Prabhu", spouse: "Premananda Prabhu",
-                                children: [{ name: "Sunanda", spouse: "Anupam", children: [{ name: "Lijitha" }, { name: "Ruchika" }] }, { name: "Prakash", spouse: "Shweta", children: [{ name: "Tejeshwar" }] }]
+                                children: [{ name: "Sunanda", spouse: "Anupam", children: [{ name: "Lijitha" }, { name: "Ruchika" }] }, { name: "Prakash", spouse: "Shweta", children: [{ name: "Teजeshwar" }] }]
                             },
                             {
                                 name: "Latha Vijaya Raghava Shenoy", spouse: "Vijaya Raghava Shenoy",
@@ -482,19 +142,6 @@
                     {
                         name: "Saraswathy Bai", spouse: "Vamana Pai",
                         children: [
-                            {
-                                name: "Jayanand Pai", spouse: "Shyamala",
-                                children: [
-                                    {
-                                        name: "Sudhakar", spouse: "Navaneetha",
-                                        children: [{ name: "Nidhi" }]
-                                    },
-                                    {
-                                        name: "Murali", spouse: "Sumalatha",
-                                        children: [{ name: "Anargha" }]
-                                    }
-                                ]
-                            },
                             { 
                                 name: "Sarvothama Pai", spouse: "Vrindha", 
                                 children: [
@@ -503,13 +150,7 @@
                                 ] 
                             },
                             {
-                                name: "Purushothama Pai", spouse: "Radha",
-                                children: [
-                                    { name: "Chandrakanth Pai", children: [] }
-                                ]
-                            },
-                            {
-                                name: "Kammalakka", spouse: "Lekshmana Pai",
+                                name: "Kamala Bai", spouse: "Lekshmana Pai",
                                 children: [
                                     {
                                         name: "Radhakrishna Pai", spouse: "Rema",
@@ -525,7 +166,7 @@
                                     },
                                     {
                                         name: "Sushma Sundaresh Mallya", spouse: "Sundaresh Mallya",
-                                        children: [{ name: "Gokul" }]
+                                        children: [{ name: "Gokul", spouse: "Priyanka" }]
                                     },
                                     {
                                         name: "Vijayalekshmi Sachidananda Pai", spouse: "Sachidananda Pai",
@@ -543,19 +184,49 @@
                                 ]
                             },
                             {
-                                name: "Sarojini", children: []
+                                name: "Purushothama Pai", spouse: "Radha",
+                                children: [
+                                    { name: "Chandrakanth Pai", children: [] }
+                                ]
+                            },
+                            {
+                                name: "Sarojini", 
+                                spouse: "Sukumaran",
+                                children: [
+                                    { 
+                                        name: "Smitha", spouse: "Anilkumar", 
+                                        children: [{ name: "Bhoumik Kiran" }, { name: "Ardra Jyothy" }] 
+                                    },
+                                    { 
+                                        name: "Soumya", spouse: "Sajith Kumar", 
+                                        children: [{ name: "Shreyas Shravan" }] 
+                                    }
+                                ]
+                            },
+                            {
+                                name: "Jayananda Pai", spouse: "Shyamala",
+                                children: [
+                                    {
+                                        name: "Sudhakar", spouse: "Navaneetha",
+                                        children: [{ name: "Nidhi" }]
+                                    },
+                                    {
+                                        name: "Murali", spouse: "Sumalatha",
+                                        children: [{ name: "Anargha" }]
+                                    }
+                                ]
                             }
                         ]
                     },
                     {
-                        name: "Droupadi", spouse: "Hariprabhu",
+                        name: "Droupadi", spouse: "HARI PRABHU",
                         children: [
                             { name: "Sreedhara Prabhu", spouse: "Santha", children: [{ name: "Kantha Varadendranath Prabhu", spouse: "Varadendranath Prabhu", children: [{ name: "Vandana" }, { name: "Chandini" }] }, { name: "Sandhya", spouse: "Pradeep Bhat", children: [{ name: "Prenitha" }] }, { name: "Geetha", spouse: "Ramesh Pai", children: [{ name: "Aswath" }] }, { name: "Preetha", spouse: "" }] },
                             { name: "Jayanand Prabhu", spouse: "Radha", children: [{ name: "Ramesh Prabhu", spouse: "Krishna", children: [{ name: "Sumithra" }] }, { name: "Dinesh Prabhu", spouse: "Preethy", children: [{ name: "Krishanu" }] }, { name: "Suman", spouse: "Sreekumar Kini", children: [{ name: "Anusree" }] }] },
                             { name: "Ramachandra Prabhu", spouse: "Tara", children: [{ name: "Radha", spouse: "Ramesh Pai", children: [{ name: "Neetha" }] }, { name: "Subhatma", spouse: "Iskcon Mumbai" }] },
                             {
                                 name: "Kanakam Surya Naik", spouse: "Surya Naik",
-                                children: [{ name: "Raji Reghunath", spouse: "Reghunath", children: [{ name: "Rasmy Raveendran", spouse: "Raveendran", children: [{ name: "Rishanth" }, { name: "Ranjith" }] }] }, { name: "Pushpa Ramakantha Pai", spouse: "Ramakantha Pai", children: [{ name: "Amrithraj", spouse: "Swaroopa" }, { name: "Govardhan" }, { name: "Anupama", spouse: "Amith" }] }, { name: "Latha Balakrishna Kamath", spouse: "Balakrishna Kamath", children: [{ name: "Bavitha", spouse: "Sreekumar" }, { name: "Vaibhav" }] }, { name: "Balakrishna Naik", spouse: "Sudha", children: [{ name: "Surya" }, { name: "Kavitha", spouse: "Ganesh" }] }, { name: "Jayasree Prabhu Kamath", spouse: "Prabhakar Kamath", children: [{ name: "Rajeev", spouse: "Poornima" }] }, { name: "Sindhu Ashok Prabhu", spouse: "Ashok Prabhu", children: [{ name: "Reshma", spouse: "Alok" }] }, { name: "Mukund Naik", spouse: "Prabha", children: [{ name: "Aadithyan", spouse: "Shivani" }] }]
+                                children: [{ name: "Raji Reghunath", spouse: "Reghunath", children: [{ name: "Rasmy Raveendran", spouse: "Raveendran", children: [{ name: "Rishanth" }, { name: "Ranjith" }] }] }, { name: "Pushpa Ramakantha Pai", spouse: "Ramakantha Pai", children: [{ name: "Amrithraj", spouse: "Swaroopa" }, { name: "Govardhan" }, { name: "Anupama", spouse: "Amith" }] }, { name: "Latha Balakrishna Kamath", spouse: "Balakrishna Kamath", children: [{ name: "Bavitha", spouse: "Sreekumar" }, { name: "Vaibhav" }] }, { name: "Balakrishna Naik", spouse: "Sudha", children: [{ name: "Surya" }, { name: "Kavitha", spouse: "Ganesh" }] }, { name: "Jayasree Prabhu Kamath", spouse: "Prabhakar Kamath", children: [{ name: "Rajeev", spouse: "Poornima" }] }, { name: "Sindhu अशोक Prabhu", spouse: "Ashok Prabhu", children: [{ name: "Reshma", spouse: "Alok" }] }, { name: "Mukund Naik", spouse: "Prabha", children: [{ name: "Aadithyan", spouse: "Shivani" }] }]
                             },
                             { name: "Madhava Prabhu", spouse: "Saroja", children: [{ name: "Sudha", spouse: "Umesh", children: [{ name: "Anirudh" }] }, { name: "Subha", spouse: "" }] },
                             { 
@@ -563,9 +234,9 @@
                                 children: [{ name: "Sudheer", children: [] }] 
                             },
                             { name: "Allakki (Geetha) Narasimha Prabhu", spouse: "Narasimha Prabhu", children: [{ name: "Manoj", spouse: "Poornima", children: [{ name: "Thejal" }, { name: "Thanvi" }] }, { name: "Mahesh", spouse: "Chandrakala", children: [{ name: "Varsha" }] }, { name: "Krishna Kumar", spouse: "Dhanya", children: [{ name: "Aarya" }, { name: "Akshara" }] }] },
-                            { name: "Nanda (Latha) Sreenivasa Prabhu", spouse: "Sreenivasa Prabhu", children: [{ name: "Sathish", spouse: "Rekha", children: [{ name: "Shreya" }] }, { name: "Savitha", spouse: "Arun", children: [{ name: "Shradha" }, { name: "Arjun" }] }, { name: "Somanath Mukhya", spouse: "", children: [{ name: "Shikha" }] }] },
-                            { name: "Premanand", spouse: "Sumana", children: [{ name: "Sunanda", spouse: "Anupam Jha", children: [{ name: "Lijitha" }, { name: "Ruchika" }] }, { name: "Prakash Prabhu", spouse: "Swetha", children: [{ name: "Tejeshwar" }] }] },
-                            { name: "Balachandra Prabhu", spouse: "Chandrakala", children: [] }
+                            { name: "Nanda (Latha) Sreenivasa Prabhu", spouse: "Sreenivasa Prabhu", children: [{ name: "Sathिश", spouse: "Rekha", children: [{ name: "Shreya" }] }, { name: "Savitha", spouse: "Arun", children: [{ name: "Shradha" }, { name: "Arjun" }] }, { name: "Somanath Mukhya", spouse: "", children: [{ name: "Shikha" }] }] },
+                            { name: "PH Premanand", spouse: "Sumana", children: [{ name: "Sunanda", spouse: "Anupam Jha", children: [{ name: "Lijitha" }, { name: "Ruchika" }] }, { name: "Prakash Prabhu", spouse: "Swetha", children: [{ name: "Tejeshwar" }] }] },
+                            { name: "PH Balachandran", spouse: "Chandrakala", children: [] }
                         ]
                     },
                     {
@@ -592,7 +263,7 @@
                                 ] 
                             },
                             { 
-                                name: "Meera Prabhakar Prabhu", spouse: "Prabhakar Prabhu", 
+                                name: "Meera Prabhu", spouse: "Prabhakar Prabhu", 
                                 children: [
                                     {
                                         name: "Deepa Dinesh Pai", spouse: "Dinesh Pai",
@@ -680,9 +351,9 @@
                                         name: "Dilip", spouse: "Dhanya",
                                         children: [{ name: "Aavyaan" }, { name: "Pragyaan" }]
                                     },
-                                    {
-                                        name: "Reshmitha", spouse: "Anup",
-                                        children: [{ name: "Adithya" }]
+                                    { 
+                                        name: "Anup", spouse: "Reshmitha", 
+                                        children: [{ name: "Adithya" }] 
                                     }
                                 ]
                             }
@@ -754,7 +425,7 @@
                                     }
                                 ]
                             },
-                            { name: "Chandra Kumari", spouse: "Sasikumar Shenoy", children: [] },
+                            { name: "Chandra कुमारी", spouse: "Sasikumar Shenoy", children: [] },
                             { name: "Suseela", spouse: "PSR Rao", children: [] }
                         ] 
                     },
@@ -858,11 +529,11 @@
         const breadcrumbContainer = document.getElementById('breadcrumbs');
         const searchInput = document.getElementById('global-search');
         const searchResults = document.getElementById('search-results');
+        const totalFooter = document.getElementById('total-members-text');
 
         let history = []; 
         let flatTree = [];
 
-        // Kudumb sadasyer search index banano (Bangla Latin: Indexing family members for search)
         function buildFlatTree(node, path = []) {
             if (node.name !== "PVRKK") {
                 flatTree.push({ name: node.name, spouse: node.spouse, children: node.children || [], path: [...path] });
@@ -874,38 +545,88 @@
             }
         }
 
+        function calculateTotalCount(node) {
+            let count = 1; 
+            if (node.spouse && node.spouse.trim() !== "") {
+                count++; 
+            }
+            if (node.children) {
+                node.children.forEach(child => {
+                    count += calculateTotalCount(child);
+                });
+            }
+            return count;
+        }
+
         buildFlatTree(familyData);
 
-        // Search logic
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
-            if (term.length < 2) { searchResults.style.display = 'none'; return; }
+            if (term.length < 2) { searchResults.classList.add('hidden'); return; }
             const matches = flatTree.filter(p => p.name.toLowerCase().includes(term) || (p.spouse && p.spouse.toLowerCase().includes(term))).slice(0, 10);
             if (matches.length > 0) {
                 searchResults.innerHTML = '';
                 matches.forEach(person => {
                     const item = document.createElement('div');
-                    item.className = 'search-result-item';
+                    item.className = 'p-4 border-b border-slate-50 last:border-0 hover:bg-slate-50 cursor-pointer transition-colors';
                     const pText = person.path.map(p => p.name).join(' › ');
-                    item.innerHTML = `<span class="result-name">${person.name}${person.spouse ? ` & ${person.spouse}` : ''}</span><span class="result-path">${pText}</span>`;
-                    item.onclick = () => { jumpToPerson(person); searchInput.value = ''; searchResults.style.display = 'none'; };
+                    item.innerHTML = `
+                        <span class="block font-bold text-slate-800 text-sm">${person.name}${person.spouse ? ` & ${person.spouse}` : ''}</span>
+                        <span class="block text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">${pText}</span>
+                    `;
+                    item.onclick = () => { jumpToPerson(person); searchInput.value = ''; searchResults.classList.add('hidden'); };
                     searchResults.appendChild(item);
                 });
-                searchResults.style.display = 'block';
-            } else { searchResults.style.display = 'none'; }
+                searchResults.classList.remove('hidden');
+            } else { searchResults.classList.add('hidden'); }
         });
-
-        document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) searchResults.style.display = 'none'; });
 
         function jumpToPerson(person) {
             history = person.path.filter(p => p.name !== "PVRKK");
             render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        function checkPasscode() {
+            const input = document.getElementById('passcode-input').value;
+            const error = document.getElementById('error-msg');
+            if (input === 'pvrkk') {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+                
+                const total = calculateTotalCount(familyData);
+                totalFooter.textContent = `Total Members Added: ${total}`;
+                
+                render(); 
+            } else {
+                error.classList.remove('hidden');
+                document.getElementById('passcode-input').value = '';
+            }
+        }
+
+        document.getElementById('passcode-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPasscode();
+        });
 
         function updateBreadcrumbs() {
             breadcrumbContainer.innerHTML = '';
-            const root = document.createElement('span'); root.className = 'breadcrumb-item'; root.textContent = 'PVRKK'; breadcrumbContainer.appendChild(root);
-            history.forEach((entry) => { const item = document.createElement('span'); item.className = 'breadcrumb-item'; item.textContent = entry.name; breadcrumbContainer.appendChild(item); });
+            const root = document.createElement('span'); 
+            root.className = 'hover:text-slate-800 cursor-pointer transition-colors';
+            root.textContent = 'PVRKK'; 
+            root.onclick = () => { history = []; render(); };
+            breadcrumbContainer.appendChild(root);
+            
+            history.forEach((entry, idx) => {
+                const separator = document.createElement('span');
+                separator.textContent = '›';
+                breadcrumbContainer.appendChild(separator);
+                
+                const item = document.createElement('span');
+                item.className = idx === history.length - 1 ? 'text-slate-800 font-bold' : 'hover:text-slate-800 cursor-pointer transition-colors';
+                item.textContent = entry.name;
+                item.onclick = () => { history = history.slice(0, idx + 1); render(); };
+                breadcrumbContainer.appendChild(item);
+            });
         }
 
         function executeNav(person) {
@@ -914,32 +635,70 @@
         }
 
         function createCard(person) {
-            const card = document.createElement('div'); card.className = 'card';
-            const hasChildren = person.children && person.children.length > 0;
-            if (!hasChildren) card.classList.add('no-children');
+            const card = document.createElement('div'); 
+            card.className = 'bg-white p-6 rounded-2xl border border-slate-200 text-center relative card-transition min-h-[140px] flex flex-col justify-center w-full sm:w-[280px]';
             
-            const name = document.createElement('div'); name.className = 'name'; name.textContent = person.name; card.appendChild(name);
-            if (person.spouse && person.spouse.trim() !== "") { const spouse = document.createElement('div'); spouse.className = 'spouse'; spouse.textContent = `& ${person.spouse}`; card.appendChild(spouse); }
-            if (hasChildren) { const icon = document.createElement('div'); icon.className = 'has-children-icon'; icon.textContent = `(${person.children.length} children) ➔`; card.appendChild(icon); card.onclick = () => executeNav(person); }
+            const hasChildren = person.children && person.children.length > 0;
+            if (!hasChildren) card.classList.add('cursor-default');
+            else {
+                card.classList.add('cursor-pointer');
+                card.onclick = () => executeNav(person);
+            }
+            
+            const name = document.createElement('div'); 
+            name.className = 'font-bold text-slate-800 text-lg mb-1 leading-tight'; 
+            name.textContent = person.name; 
+            card.appendChild(name);
+            
+            if (person.spouse && person.spouse.trim() !== "") { 
+                const spouse = document.createElement('div'); 
+                spouse.className = 'text-xs text-slate-400 font-medium italic'; 
+                spouse.textContent = `& ${person.spouse}`; 
+                card.appendChild(spouse); 
+            }
+            
+            if (hasChildren) { 
+                const footer = document.createElement('div');
+                footer.className = 'mt-4 flex items-center justify-center gap-1 text-[10px] font-black text-slate-400 uppercase tracking-widest';
+                footer.innerHTML = `<span>${person.children.length} Children</span> <span class="text-sm leading-none mt-0.5">→</span>`;
+                card.appendChild(footer);
+            }
+            
             return card;
         }
 
         function goBack() { history.pop(); render(); }
 
-        // Tree rendering logic (Bangla Latin: Tree render korar logic)
         function render() {
             viewContainer.innerHTML = '';
             updateBreadcrumbs();
             const current = history.length > 0 ? history[history.length - 1] : { name: 'PVRKK', spouse: '', children: familyData.children };
-            const screen = document.createElement('div'); screen.className = 'screen active';
+            
+            const screen = document.createElement('div'); 
+            screen.className = 'space-y-8 animate-in fade-in duration-300';
+            
             if (history.length > 0) {
-                const backBtn = document.createElement('button'); backBtn.className = 'back-btn'; backBtn.textContent = '← Back'; backBtn.onclick = goBack; screen.appendChild(backBtn);
+                const backBtn = document.createElement('button'); 
+                backBtn.className = 'text-xs font-bold text-slate-800 flex items-center gap-1 hover:gap-2 transition-all'; 
+                backBtn.innerHTML = '← Back to Parent'; 
+                backBtn.onclick = goBack; 
+                screen.appendChild(backBtn);
+                
                 const spouseText = current.spouse && current.spouse.trim() !== "" ? ` & ${current.spouse}` : '';
-                const info = document.createElement('div'); info.className = 'parent-info'; info.innerHTML = `<h2>Children of</h2><span>${current.name}${spouseText}</span>`; screen.appendChild(info);
+                const info = document.createElement('div'); 
+                info.className = 'bg-slate-50 p-8 rounded-3xl border border-slate-100 text-center'; 
+                info.innerHTML = `
+                    <h3 class="text-xs font-black text-slate-300 uppercase tracking-[0.2em] mb-2">Descendants of</h3>
+                    <span class="text-3xl font-black text-slate-800 leading-none">${current.name}${spouseText}</span>
+                `; 
+                screen.appendChild(info);
             }
-            const grid = document.createElement('div'); grid.className = 'child-grid';
+
+            const grid = document.createElement('div'); 
+            grid.className = 'flex flex-wrap gap-6 justify-center';
             current.children.forEach(child => grid.appendChild(createCard(child)));
             screen.appendChild(grid);
+            
             viewContainer.appendChild(screen);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
