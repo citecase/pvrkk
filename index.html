@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PVRKK Family Tree</title>
     <style>
+        /* General Styles */
         * {
             margin: 0;
             padding: 0;
@@ -36,7 +37,7 @@
             color: #1a1a1a;
         }
 
-        /* Search Styles */
+        /* Search Bar Styles */
         .search-container {
             max-width: 400px;
             margin: 10px auto;
@@ -95,7 +96,7 @@
             color: #888;
         }
 
-        /* Breadcrumbs */
+        /* Breadcrumb Styles */
         .breadcrumbs {
             display: flex;
             justify-content: center;
@@ -135,54 +136,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .gate-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f8f9fa;
-            z-index: 1000;
-        }
-
-        .gate-card {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            width: 90%;
-            max-width: 360px;
-            text-align: center;
-            border: 1px solid #eee;
-        }
-
-        .gate-card h2 {
-            margin-bottom: 25px;
-            font-size: 20px;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.2s;
-            background: #fafafa;
-        }
-
-        .input-field:focus {
-            border-color: #333;
-            background: #fff;
-        }
-
+        /* Navigation Buttons */
         .back-btn {
             background: #333;
             color: white;
@@ -222,6 +176,7 @@
             margin-top: 5px;
         }
 
+        /* Family Grid Layout */
         .child-grid {
             display: flex;
             flex-wrap: wrap;
@@ -255,15 +210,6 @@
             cursor: default;
         }
 
-        .card.locked::before {
-            content: '🔒';
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 14px;
-            opacity: 0.5;
-        }
-
         .card .name {
             font-weight: 700;
             font-size: 18px;
@@ -285,51 +231,7 @@
             color: #ccc;
         }
 
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-
-        .passcode-style {
-            letter-spacing: 4px;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-cancel { background: #eee; color: #333; }
-        .btn-confirm { background: #333; color: white; }
-
+        /* Feedback Link */
         .feedback-btn {
             position: fixed;
             top: 20px;
@@ -354,9 +256,10 @@
             transform: scale(1.05);
         }
 
+        /* Mobile Adjustments */
         @media (max-width: 600px) {
             .header {
-                padding-top: 60px; /* Space for feedback button */
+                padding-top: 60px;
             }
             .header h1 {
                 font-size: 20px;
@@ -379,15 +282,7 @@
 </head>
 <body>
 
-    <div id="central-gate" class="gate-screen">
-        <div class="gate-card">
-            <h2>PVRKK Family Tree</h2>
-            <input type="password" id="main-pass-input" class="input-field" placeholder="Enter passcode" autocomplete="off">
-            <div id="main-error" style="color: #dc3545; font-size: 12px; margin-top: 10px; display: none;">Invalid passcode.</div>
-        </div>
-    </div>
-
-    <div id="main-content" style="display:none;">
+    <div id="main-content">
         <div class="header">
             <a href="https://tally.so/r/EklqrL" target="_blank" class="feedback-btn" id="feedback-link">
                 <span>💬 Feedback</span>
@@ -405,20 +300,8 @@
         </div>
     </div>
 
-    <div id="modal-overlay" class="modal-overlay">
-        <div class="modal">
-            <h3>Locked Branch</h3>
-            <p style="color: #666; font-size: 14px; margin-bottom: 20px;">Enter access code to view this family group.</p>
-            <input type="password" id="branch-pass-input" class="input-field passcode-style" placeholder="••••" maxlength="4">
-            <div id="branch-error" style="color: #dc3545; font-size: 12px; margin-top: -15px; margin-bottom: 15px; display: none;">Incorrect code. Try again.</div>
-            <div class="modal-actions">
-                <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
-                <button class="modal-btn btn-confirm" onclick="verifyBranchPasscode()">Unlock</button>
-            </div>
-        </div>
-    </div>
-
     <script>
+        // Family Data Structure
         const familyData = {
             name: "PVRKK",
             children: [{
@@ -430,17 +313,10 @@
                         spouse: "Sunanda",
                         children: [
                             {
-                                name: "Sudha Pai",
-                                spouse: "Sarvothama Pai",
+                                name: "Sudha Pai", spouse: "Sarvothama Pai",
                                 children: [
-                                    {
-                                        name: "Vasanth", spouse: "Neetha",
-                                        children: [{ name: "Ishaan", spouse: "Urja" }, { name: "Nishanth" }]
-                                    },
-                                    {
-                                        name: "Jayanth", spouse: "Suchismitha",
-                                        children: [{ name: "Siddanth" }, { name: "Sarang" }]
-                                    },
+                                    { name: "Vasanth", spouse: "Neetha", children: [{ name: "Ishaan", spouse: "Urja" }, { name: "Nishanth" }] },
+                                    { name: "Jayanth", spouse: "Suchismitha", children: [{ name: "Siddanth" }, { name: "Sarang" }] },
                                     {
                                         name: "Sandhya", spouse: "Viswanath Shenoy",
                                         children: [
@@ -451,8 +327,7 @@
                                 ]
                             },
                             {
-                                name: "Jahnavi Kini",
-                                spouse: "Sreenivasa Kini",
+                                name: "Jahnavi Kini", spouse: "Sreenivasa Kini",
                                 children: [
                                     {
                                         name: "Manohar Kini", spouse: "Asha Kini",
@@ -462,50 +337,29 @@
                                         ]
                                     },
                                     {
-                                        name: "Jayalakshmi", spouse: "AN Balchand",
-                                        children: [
-                                            { name: "AB Suraj", spouse: "Lakshmi Suraj", children: [{ name: "Krithi" }] },
-                                            { name: "AB Varun", spouse: "Yogitha" }
-                                        ]
+                                        name: "Jayalakshmi", spouse: "An Balchand",
+                                        children: [{ name: "Ab Suraj", spouse: "Lakshmi Suraj", children: [{ name: "Krithi" }] }, { name: "Ab Varun", spouse: "Yogitha" }]
                                     },
                                     { name: "Sreekumar Kini", spouse: "Suman Kini", children: [{ name: "Anushri S. Kumar" }] },
-                                    {
-                                        name: "Bhagyasree", spouse: "Sudhakar Pai",
-                                        children: [{ name: "Aparna Pai", spouse: "Sathyajeet" }, { name: "Apoorva Pai" }]
-                                    },
-                                    {
-                                        name: "Yogindunath S.", spouse: "Supriya",
-                                        children: [{ name: "Yogitha Kini" }, { name: "Vaibhav Kini" }, { name: "Shivada Kini" }]
-                                    }
+                                    { name: "Bhagyasree", spouse: "Sudhakar Pai", children: [{ name: "Aparna Pai", spouse: "Sathyajeet" }, { name: "Apoorva Pai" }] },
+                                    { name: "Yogindunath S.", spouse: "Supriya", children: [{ name: "Yogitha Kini" }, { name: "Vaibhav Kini" }, { name: "Shivada Kini" }] }
                                 ]
                             },
                             {
                                 name: "Jeni Gokulanath Pai", spouse: "Gokulanath Pai",
-                                children: [
-                                    { name: "Maya", spouse: "Balaji", children: [{ name: "Shivaji" }] },
-                                    { name: "Pia", spouse: "Jude", children: [{ name: "Tiana" }] }
-                                ]
+                                children: [{ name: "Maya", spouse: "Balaji", children: [{ name: "Shivaji" }] }, { name: "Pia", spouse: "Jude", children: [{ name: "Tiana" }] }]
                             },
                             {
                                 name: "Sarojini Balakrishna Prabhu", spouse: "Balakrishna Prabhu",
-                                children: [
-                                    { name: "Sushma", spouse: "Manoj Kumar Kini", children: [{ name: "Hrishikesh" }, { name: "Hariakshath" }] },
-                                    { name: "Sandeep Prabhu", spouse: "Priya", children: [{ name: "Sanjana" }] }
-                                ]
+                                children: [{ name: "Sushma", spouse: "Manoj Kumar Kini", children: [{ name: "Hrishikesh" }, { name: "Hariakshath" }] }, { name: "Sandeep Prabhu", spouse: "Priya", children: [{ name: "Sanjana" }] }]
                             },
                             {
-                                name: "Jayasree Vadhyar", spouse: "ARS Vadhyar",
-                                children: [
-                                    { name: "Manju Vadhyar", spouse: "Rohit Prabhu", children: [{ name: "Harsch" }] },
-                                    { name: "Sindhu Vadhyar" }
-                                ]
+                                name: "Jayasree Vadhyar", spouse: "Ars Vadhyar",
+                                children: [{ name: "Manju Vadhyar", spouse: "Rohit Prabhu", children: [{ name: "Harsch" }] }, { name: "Sindhu Vadhyar" }]
                             },
                             {
                                 name: "Sumana Premananda Prabhu", spouse: "Premananda Prabhu",
-                                children: [
-                                    { name: "Sunanda", spouse: "Anupam", children: [{ name: "Lijitha" }, { name: "Ruchika" }] },
-                                    { name: "Prakash", spouse: "Shweta", children: [{ name: "Tejeshwar" }] }
-                                ]
+                                children: [{ name: "Sunanda", spouse: "Anupam", children: [{ name: "Lijitha" }, { name: "Ruchika" }] }, { name: "Prakash", spouse: "Shweta", children: [{ name: "Tejeshwar" }] }]
                             },
                             {
                                 name: "Latha Vijaya Raghava Shenoy", spouse: "Vijaya Raghava Shenoy",
@@ -514,147 +368,376 @@
                         ]
                     },
                     {
-                        name: "Saraswathy Bai",
-                        spouse: "Vamana Pai",
+                        name: "Saraswathy Bai", spouse: "Vamana Pai",
                         children: [
-                            {
-                                name: "Vrindha Sarvothama Pai", spouse: "Sarvothama Pai",
+                            { 
+                                name: "Sarvothama Pai", spouse: "Vrindha", 
                                 children: [
                                     { name: "Sudhish Pai", spouse: "Anita", children: [{ name: "Siddharth" }] },
-                                    { name: "Anupama Sujeet Pai", spouse: "Sujeet Pai", children: [{ name: "Akshay" }, { name: "Akshara" }] }
-                                ]
+                                    { name: "Sujeet Pai", spouse: "Anupama", children: [{ name: "Akshay" }, { name: "Akshara" }] }
+                                ] 
                             },
                             {
-                                name: "Kammalakka Lekshmana Pai", spouse: "Lekshmana Pai",
+                                name: "Kammalakka", spouse: "Lekshmana Pai",
                                 children: [
                                     {
                                         name: "Radhakrishna Pai", spouse: "Rema",
-                                        children: [{ name: "Rahul" }, { name: "Anjali" }, { name: "Aadhya" }]
+                                        children: [
+                                            {
+                                                name: "Rahul", spouse: "Anjali",
+                                                children: [{ name: "Aadhya" }]
+                                            },
+                                            {
+                                                name: "Ramkumar", spouse: "Shilpa", children: []
+                                            }
+                                        ]
                                     },
-                                    { name: "Ramkumar", spouse: "Shilpa" },
-                                    { name: "Sushma Sundaresh Mallya", spouse: "Sundaresh Mallya", children: [{ name: "Gokul" }] },
+                                    {
+                                        name: "Sushma Sundaresh Mallya", spouse: "Sundaresh Mallya",
+                                        children: [{ name: "Gokul" }]
+                                    },
                                     {
                                         name: "Vijayalekshmi Sachidananda Pai", spouse: "Sachidananda Pai",
                                         children: [
-                                            { name: "Neethu Hiran Shenoy", spouse: "Hiran Shenoy", children: [{ name: "Avni" }] },
-                                            { name: "Nithya Sumendranath Prabhu", spouse: "Sumendranath Prabhu", children: [{ name: "Parthiv" }, { name: "Parinidhi" }] }
+                                            {
+                                                name: "Neethu", spouse: "Hiran Shenoy",
+                                                children: [{ name: "Avni" }]
+                                            },
+                                            {
+                                                name: "Nithya", spouse: "Sumendranath Prabhu",
+                                                children: [{ name: "Parthiv" }, { name: "Parinidhi" }]
+                                            }
                                         ]
+                                    }
+                                ]
+                            },
+                            {
+                                name: "Sarojini", children: []
+                            }
+                        ]
+                    },
+                    {
+                        name: "Droupadi", spouse: "Hariprabhu",
+                        children: [
+                            { name: "Sreedhara Prabhu", spouse: "Santha", children: [{ name: "Kantha Varadendranath Prabhu", spouse: "Varadendranath Prabhu", children: [{ name: "Vandana" }, { name: "Chandini" }] }, { name: "Sandhya", spouse: "Pradeep Bhat", children: [{ name: "Prenitha" }] }, { name: "Geetha", spouse: "Ramesh Pai", children: [{ name: "Aswath" }] }, { name: "Preetha", spouse: "" }] },
+                            { name: "Jayanand Prabhu", spouse: "Radha", children: [{ name: "Ramesh Prabhu", spouse: "Krishna", children: [{ name: "Sumithra" }] }, { name: "Dinesh Prabhu", spouse: "Preethy", children: [{ name: "Krishanu" }] }, { name: "Suman", spouse: "Sreekumar Kini", children: [{ name: "Anusree" }] }] },
+                            { name: "Ramachandra Prabhu", spouse: "Tara", children: [{ name: "Radha", spouse: "Ramesh Pai", children: [{ name: "Neetha" }] }, { name: "Subhatma", spouse: "Iskcon Mumbai" }] },
+                            {
+                                name: "Kanakam Surya Naik", spouse: "Surya Naik",
+                                children: [{ name: "Raji Reghunath", spouse: "Reghunath", children: [{ name: "Rasmy Raveendran", spouse: "Raveendran", children: [{ name: "Rishanth" }, { name: "Ranjith" }] }] }, { name: "Pushpa Ramakantha Pai", spouse: "Ramakantha Pai", children: [{ name: "Amrithraj", spouse: "Swaroopa" }, { name: "Govardhan" }, { name: "Anupama", spouse: "Amith" }] }, { name: "Latha Balakrishna Kamath", spouse: "Balakrishna Kamath", children: [{ name: "Bavitha", spouse: "Sreekumar" }, { name: "Vaibhav" }] }, { name: "Balakrishna Naik", spouse: "Sudha", children: [{ name: "Surya" }, { name: "Kavitha", spouse: "Ganesh" }] }, { name: "Jayasree Prabhu Kamath", spouse: "Prabhakar Kamath", children: [{ name: "Rajeev", spouse: "Poornima" }] }, { name: "Sindhu Ashok Prabhu", spouse: "Ashok Prabhu", children: [{ name: "Reshma", spouse: "Alok" }] }, { name: "Mukund Naik", spouse: "Prabha", children: [{ name: "Aadithyan", spouse: "Shivani" }] }]
+                            },
+                            { name: "Madhava Prabhu", spouse: "Saroja", children: [{ name: "Sudha", spouse: "Umesh", children: [{ name: "Anirudh" }] }, { name: "Subha", spouse: "" }] },
+                            { 
+                                name: "Ramanandan PH", spouse: "Hemalatha", 
+                                children: [{ name: "Sudheer", children: [] }] 
+                            },
+                            { name: "Allakki (Geetha) Narasimha Prabhu", spouse: "Narasimha Prabhu", children: [{ name: "Manoj", spouse: "Poornima", children: [{ name: "Thejal" }, { name: "Thanvi" }] }, { name: "Mahesh", spouse: "Chandrakala", children: [{ name: "Varsha" }] }, { name: "Krishna Kumar", spouse: "Dhanya", children: [{ name: "Aarya" }, { name: "Akshara" }] }] },
+                            { name: "Nanda (Latha) Sreenivasa Prabhu", spouse: "Sreenivasa Prabhu", children: [{ name: "Sathish", spouse: "Rekha", children: [{ name: "Shreya" }] }, { name: "Savitha", spouse: "Arun", children: [{ name: "Shradha" }, { name: "Arjun" }] }, { name: "Somanath Mukhya", spouse: "", children: [{ name: "Shikha" }] }] },
+                            { name: "Premanand", spouse: "Sumana", children: [{ name: "Sunanda", spouse: "Anupam Jha", children: [{ name: "Lijitha" }, { name: "Ruchika" }] }, { name: "Prakash Prabhu", spouse: "Swetha", children: [{ name: "Tejeshwar" }] }] },
+                            { name: "Balachandra Prabhu", spouse: "Chandrakala", children: [] }
+                        ]
+                    },
+                    {
+                        name: "Sreenivasa Kamath",
+                        spouse: "Sakunthala",
+                        children: [
+                            { 
+                                name: "Suseela Ramananda Naik", spouse: "Ramananda Naik", 
+                                children: [
+                                    { name: "Gokul Nayak", children: [] },
+                                    { 
+                                        name: "Vidya Raveendranath Shenoy", 
+                                        children: [
+                                            { name: "Rohit Shenoy", spouse: "Juhi Rohit", children: [] }
+                                        ] 
+                                    },
+                                    {
+                                        name: "Hema Ranjith", spouse: "Ranjith",
+                                        children: [
+                                            { name: "Jayaram", children: [] },
+                                            { name: "Balaram", children: [] }
+                                        ]
+                                    }
+                                ] 
+                            },
+                            { 
+                                name: "Meera Prabhakar Prabhu", spouse: "Prabhakar Prabhu", 
+                                children: [
+                                    {
+                                        name: "Deepa Dinesh Pai", spouse: "Dinesh Pai",
+                                        children: [
+                                            {
+                                                name: "Sudarsana", spouse: "Pragnesh",
+                                                children: [{ name: "Boddhi" }]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: "Somanath",
+                                        children: [
+                                            {
+                                                name: "Venugopal", spouse: "Padmaja",
+                                                children: [
+                                                    {
+                                                        name: "Pavithra", spouse: "Prithvinath",
+                                                        children: [{ name: "Pranav" }]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: "Rekha", spouse: "Sudhir",
+                                        children: [
+                                            { name: "Vinayak", spouse: "Sanchana" }
+                                        ]
+                                    },
+                                    {
+                                        name: "Jagadish", spouse: "Lekshmi",
+                                        children: [
+                                            { name: "Anjana", spouse: "Abhiram" }
+                                        ]
+                                    }
+                                ] 
+                            },
+                            { 
+                                name: "Vatsala Ramachandra Kamath", spouse: "Ramachandra Kamath", 
+                                children: [
+                                    {
+                                        name: "Srijith", spouse: "Vinitha",
+                                        children: [
+                                            { name: "Anika", children: [] },
+                                            { name: "Avantika", children: [] }
+                                        ]
+                                    }
+                                ] 
+                            },
+                            { 
+                                name: "Lalitha Ramananda Kamath", spouse: "Ramananda Kamath", 
+                                children: [
+                                    {
+                                        name: "Rajeev Kamath", spouse: "Rukma Rajeev",
+                                        children: [
+                                            { name: "Pranay", children: [] },
+                                            { name: "Krishna", children: [] }
+                                        ]
+                                    },
+                                    {
+                                        name: "Radhika Ganesh", spouse: "Ganesh",
+                                        children: [
+                                            { name: "Gowri", children: [] },
+                                            { name: "Govind", children: [] }
+                                        ]
+                                    }
+                                ] 
+                            },
+                            { 
+                                name: "Anitha Narasimha Bhat", spouse: "Narasimha Bhat", 
+                                children: [
+                                    {
+                                        name: "Sreelakshmy", spouse: "Sreekumar",
+                                        children: [{ name: "Adithi" }, { name: "Gayathri" }]
+                                    },
+                                    { name: "Sripriya", spouse: "Mahesh", children: [] },
+                                    { name: "Sadanand Karthikey", children: [] }
+                                ]
+                            },
+                            { 
+                                name: "Jayanthy Janardhana Naik", spouse: "Janardhana Naik", 
+                                children: [
+                                    {
+                                        name: "Dilip", spouse: "Dhanya",
+                                        children: [{ name: "Aavyaan" }, { name: "Pragyaan" }]
+                                    },
+                                    {
+                                        name: "Reshmitha", spouse: "Anup",
+                                        children: [{ name: "Adithya" }]
                                     }
                                 ]
                             }
                         ]
                     },
-                    {
-                        name: "Droupadi",
-                        spouse: "Hariprabhu",
+                    { 
+                        name: "Lakshmi Bai", 
+                        spouse: "Janardhana Bhakthan", 
                         children: [
                             {
-                                name: "Sreedhara Prabhu", spouse: "Santha",
+                                name: "Jagannatha Bhakthan",
+                                spouse: "Latha",
                                 children: [
-                                    { name: "Kantha Varadendranath Prabhu", spouse: "Varadendranath Prabhu", children: [{ name: "Vandana" }, { name: "Chandini" }] },
-                                    { name: "Sandhya", spouse: "Pradeep Bhat", children: [{ name: "Prenitha" }] },
-                                    { name: "Geetha", spouse: "Ramesh Pai", children: [{ name: "Aswath" }] },
-                                    { name: "Preetha", spouse: "" }
+                                    { name: "Sangeetha", children: [] },
+                                    { name: "Suvarna", children: [] },
+                                    { name: "Arpana", children: [] },
+                                    { name: "Rachana", children: [] }
                                 ]
                             },
                             {
-                                name: "Jayanand Radha Prabhu", spouse: "Radha",
+                                name: "Gopinath Bhakthan",
+                                spouse: "Indira",
                                 children: [
-                                    { name: "Ramesh Prabhu", spouse: "Krishna", children: [{ name: "Sumithra" }] },
-                                    { name: "Dinesh Prabhu", spouse: "Preethy", children: [{ name: "Krishanu" }] },
-                                    { name: "Suman", spouse: "Sreekumar Kini", children: [{ name: "Anusree" }] }
+                                    { name: "Surendra Bhakthan", children: [] },
+                                    { name: "Narendra Bhakthan", children: [] },
+                                    { name: "Leela", children: [] }
+                                ]
+                            },
+                            { name: "Raja Bhakthan", spouse: "Leelamani", children: [] },
+                            {
+                                name: "Nagendra Bhakthan",
+                                spouse: "Anandi Bai",
+                                children: [
+                                    { name: "Bindya", children: [] },
+                                    { name: "Anitha", children: [] }
                                 ]
                             },
                             {
-                                name: "Ramachandra Prabhu", spouse: "",
-                                children: [
-                                    { name: "Radha", spouse: "Ramesh Pai", children: [{ name: "Neetha" }] },
-                                    { name: "Subhatma", spouse: "ISKCON Mumbai" }
-                                ]
-                            },
-                            {
-                                name: "Kanakam Surya Naik", spouse: "Surya Naik",
+                                name: "Raghunatha Bhakthan",
+                                spouse: "Geetha",
                                 children: [
                                     {
-                                        name: "Raji Reghunath", spouse: "Reghunath",
-                                        children: [{ name: "Rasmy Raveendran", spouse: "Raveendran", children: [{ name: "Rishanth" }, { name: "Ranjith" }] }]
+                                        name: "Sujith Bhakthan",
+                                        spouse: "Swetha",
+                                        children: [{ name: "Rishi Bhakthan", children: [] }]
+                                    },
+                                    { name: "Abhijeeth Bhakthan", children: [] }
+                                ]
+                            },
+                            { 
+                                name: "Ratnakumari", 
+                                spouse: "Upendranath Shenoy",
+                                children: [
+                                    {
+                                        name: "Bindu",
+                                        spouse: "Sundaresh Naik",
+                                        children: [
+                                            {
+                                                name: "Ankita",
+                                                spouse: "Vinay",
+                                                children: [{ name: "Vignesh", children: [] }]
+                                            }
+                                        ]
                                     },
                                     {
-                                        name: "Pushpa Ramakantha Pai", spouse: "Ramakantha Pai",
-                                        children: [{ name: "Amrithraj", spouse: "Swaroopa" }, { name: "Govardhan" }, { name: "Anupama", spouse: "Amith" }]
-                                    },
-                                    { name: "Latha Balakrishna Kamath", spouse: "Balakrishna Kamath", children: [{ name: "Bavitha", spouse: "Sreekumar" }, { name: "Vaibhav" }] },
-                                    { name: "Balakrishna Naik", spouse: "Sudha", children: [{ name: "Surya" }, { name: "Kavitha", spouse: "Ganesh" }] },
-                                    { name: "Jayasree Prabhakar Kamath", spouse: "Prabhakar Kamath", children: [{ name: "Rajeev", spouse: "Poornima" }] },
-                                    { name: "Sindhu Ashok Prabhu", spouse: "Ashok Prabhu", children: [{ name: "Reshma", spouse: "Alok" }] },
-                                    { name: "Mukund Naik", spouse: "Prabha", children: [{ name: "Aadithyan", spouse: "Shivani" }] }
+                                        name: "Sindhu",
+                                        spouse: "Mangesh Bhat",
+                                        children: [{ name: "Ramgopal Bhat", children: [] }]
+                                    }
                                 ]
                             },
-                            {
-                                name: "Madhava Prabhu", spouse: "Saroja",
-                                children: [{ name: "Sudha", spouse: "Umesh", children: [{ name: "Anirudh" }] }, { name: "Subha", spouse: "" }]
-                            },
-                            {
-                                name: "Allakki Narasimha Prabhu", spouse: "Narasimha Prabhu",
-                                children: [
-                                    { name: "Manoj", spouse: "Poornima", children: [{ name: "Thejal" }, { name: "Thanvi" }] },
-                                    { name: "Mahesh", spouse: "Chandrakala", children: [{ name: "Varsha" }] },
-                                    { name: "Krishna Kumar", spouse: "Dhanya", children: [{ name: "Aarya" }, { name: "Akshara" }] }
-                                ]
-                            },
-                            {
-                                name: "Nanda Sreenivasa Prabhu", spouse: "Sreenivasa Prabhu",
-                                children: [
-                                    { name: "Sathish", spouse: "Rekha", children: [{ name: "Shreya" }] },
-                                    { name: "Savitha", spouse: "Arun", children: [{ name: "Shradha" }, { name: "Arjun" }] },
-                                    { name: "Somanath Mukhya", spouse: "", children: [{ name: "Shikha" }] }
-                                ]
-                            },
-                            {
-                                name: "Premanand", spouse: "Sumana",
-                                children: [
-                                    { name: "Sunanda", spouse: "Anupam Jha", children: [{ name: "Lijitha" }, { name: "Ruchika" }] },
-                                    { name: "Prakash Prabhu", spouse: "Swetha", children: [{ name: "Tejeshwar" }] }
-                                ]
-                            },
-                            { name: "Balachandra Prabhu", spouse: "Chandrakala", children: [] }
-                        ]
+                            { name: "Chandra Kumari", spouse: "Sasikumar Shenoy", children: [] },
+                            { name: "Suseela", spouse: "PSR Rao", children: [] }
+                        ] 
                     },
-                    { name: "Sreenivasa Kamath", spouse: "Sakunthala", children: [] },
-                    { name: "Lekshmy Bai", spouse: "Janardhana Bhakthan", children: [] },
-                    { name: "Remani Bai", spouse: "Vamana Naik", children: [] },
-                    { name: "Raghavendra Kamath", spouse: "Manorama", children: [] }
+                    { 
+                        name: "Remani Bai", 
+                        spouse: "Vamana Naik", 
+                        children: [
+                            {
+                                name: "Ramesh",
+                                spouse: "Manorama",
+                                children: [
+                                    { name: "Sangeetha", children: [] },
+                                    { name: "Suchithra", children: [] }
+                                ]
+                            }
+                        ] 
+                    },
+                    { 
+                        name: "Raghavendra Kamath", 
+                        spouse: "Manorama", 
+                        children: [
+                            {
+                                name: "Geetha", spouse: "Ramachandra",
+                                children: [
+                                    {
+                                        name: "Deepesh", spouse: "Paramjeet",
+                                        children: [{ name: "Karan" }, { name: "Simran" }]
+                                    },
+                                    {
+                                        name: "Bijesh", spouse: "Shambhavi",
+                                        children: [{ name: "Advait" }]
+                                    },
+                                    { name: "Neetha" }
+                                ]
+                            },
+                            {
+                                name: "Preetha", spouse: "Jayaramdas",
+                                children: [
+                                    { name: "Reshma", spouse: "Vinay" },
+                                    {
+                                        name: "Roshan (Jayanand)", spouse: "Deepa",
+                                        children: [{ name: "Akira Nayak" }, { name: "Amyra Nayak" }]
+                                    }
+                                ]
+                            },
+                            {
+                                name: "Narayan", spouse: "Mridula",
+                                children: [
+                                    { name: "Amith", spouse: "Anupama" },
+                                    { name: "Dheeraj", spouse: "Shyama" }
+                                ]
+                            },
+                            {
+                                name: "Vrinda", spouse: "Bhaskar",
+                                children: [
+                                    {
+                                        name: "Sudhakar Prabhu", spouse: "Ruth D’Souza Prabhu",
+                                        children: [{ name: "Anoushka" }]
+                                    },
+                                    {
+                                        name: "Sandeep", spouse: "Binitha",
+                                        children: [{ name: "Avinash" }]
+                                    },
+                                    {
+                                        name: "Ranjeetha", spouse: "Binoj",
+                                        children: [{ name: "Siddharth" }, { name: "Samarth" }]
+                                    }
+                                ]
+                            },
+                            {
+                                name: "Radha (Rajamma)", spouse: "Ramesh",
+                                children: [
+                                    { name: "Radhika" },
+                                    {
+                                        name: "Renuka", spouse: "Malhar",
+                                        children: [{ name: "Ahalya" }]
+                                    }
+                                ]
+                            },
+                            {
+                                name: "Venkatesh", spouse: "Maya",
+                                children: [
+                                    {
+                                        name: "Ashwini", spouse: "Sandeep",
+                                        children: [{ name: "Madhav" }]
+                                    },
+                                    { name: "Arathi", spouse: "Aravind" }
+                                ]
+                            },
+                            {
+                                name: "Sanjeev", spouse: "Vinitha",
+                                children: [{ name: "Sreeram" }, { name: "Sreenesh" }]
+                            }
+                        ] 
+                    }
                 ]
             }]
         };
 
         const viewContainer = document.getElementById('view-container');
         const breadcrumbContainer = document.getElementById('breadcrumbs');
-        const branchModal = document.getElementById('modal-overlay');
-        const mainContent = document.getElementById('main-content');
-        const centralGate = document.getElementById('central-gate');
-        const mainPassInput = document.getElementById('main-pass-input');
-        const branchPassInput = document.getElementById('branch-pass-input');
         const searchInput = document.getElementById('global-search');
         const searchResults = document.getElementById('search-results');
 
         let history = []; 
-        let isBranchUnlocked = false; 
-        let pendingNav = null;
         let flatTree = [];
 
+        // Build search index
         function buildFlatTree(node, path = []) {
             if (node.name !== "PVRKK") {
-                flatTree.push({
-                    name: node.name,
-                    spouse: node.spouse,
-                    children: node.children || [],
-                    path: [...path]
-                });
+                flatTree.push({ name: node.name, spouse: node.spouse, children: node.children || [], path: [...path] });
             }
             if (node.children) {
                 node.children.forEach(child => {
-                    // Update: path objects now include spouse for the header display
                     buildFlatTree(child, [...path, { name: node.name, spouse: node.spouse, children: node.children }]);
                 });
             }
@@ -662,219 +745,74 @@
 
         buildFlatTree(familyData);
 
-        mainPassInput.addEventListener('input', () => {
-            const val = mainPassInput.value.toLowerCase();
-            if (val === 'pvrkk') {
-                centralGate.style.display = 'none';
-                mainContent.style.display = 'block';
-                render();
-            }
-        });
-
+        // Search Logic
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
-            if (term.length < 2) {
-                searchResults.style.display = 'none';
-                return;
-            }
-
-            const matches = flatTree.filter(person => 
-                person.name.toLowerCase().includes(term) || 
-                (person.spouse && person.spouse.toLowerCase().includes(term))
-            ).slice(0, 10);
-
+            if (term.length < 2) { searchResults.style.display = 'none'; return; }
+            const matches = flatTree.filter(p => p.name.toLowerCase().includes(term) || (p.spouse && p.spouse.toLowerCase().includes(term))).slice(0, 10);
             if (matches.length > 0) {
                 searchResults.innerHTML = '';
                 matches.forEach(person => {
                     const item = document.createElement('div');
                     item.className = 'search-result-item';
                     const pText = person.path.map(p => p.name).join(' › ');
-                    item.innerHTML = `
-                        <span class="result-name">${person.name}${person.spouse ? ` & ${person.spouse}` : ''}</span>
-                        <span class="result-path">${pText}</span>
-                    `;
-                    item.onclick = () => {
-                        jumpToPerson(person);
-                        searchInput.value = '';
-                        searchResults.style.display = 'none';
-                    };
+                    item.innerHTML = `<span class="result-name">${person.name}${person.spouse ? ` & ${person.spouse}` : ''}</span><span class="result-path">${pText}</span>`;
+                    item.onclick = () => { jumpToPerson(person); searchInput.value = ''; searchResults.style.display = 'none'; };
                     searchResults.appendChild(item);
                 });
                 searchResults.style.display = 'block';
-            } else {
-                searchResults.style.display = 'none';
-            }
+            } else { searchResults.style.display = 'none'; }
         });
 
-        document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-                searchResults.style.display = 'none';
-            }
-        });
+        document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) searchResults.style.display = 'none'; });
 
         function jumpToPerson(person) {
-            const restrictedPath = person.path.some(p => 
-                p.name !== "PVRKK" && 
-                p.name !== "Ramachandra Kamath" && 
-                p.name !== "Krishna Kamath"
-            );
-
-            if (restrictedPath && !isBranchUnlocked) {
-                openModalForJump(person);
-            } else {
-                executeJump(person);
-            }
-        }
-
-        function openModalForJump(person) {
-            pendingNav = person;
-            branchModal.style.display = 'flex';
-            branchPassInput.value = '';
-            document.getElementById('branch-error').style.display = 'none';
-            branchPassInput.focus();
-            const originalConfirm = document.querySelector('.btn-confirm').onclick;
-            document.querySelector('.btn-confirm').onclick = () => {
-                if (branchPassInput.value === "2026") {
-                    isBranchUnlocked = true;
-                    closeModal();
-                    executeJump(person);
-                    document.querySelector('.btn-confirm').onclick = originalConfirm;
-                } else {
-                    document.getElementById('branch-error').style.display = 'block';
-                }
-            };
-        }
-
-        function executeJump(person) {
             history = person.path.filter(p => p.name !== "PVRKK");
             render();
         }
 
         function updateBreadcrumbs() {
             breadcrumbContainer.innerHTML = '';
-            const root = document.createElement('span');
-            root.className = 'breadcrumb-item';
-            root.textContent = 'PVRKK';
-            breadcrumbContainer.appendChild(root);
-            history.forEach((entry) => {
-                const item = document.createElement('span');
-                item.className = 'breadcrumb-item';
-                item.textContent = entry.name;
-                breadcrumbContainer.appendChild(item);
-            });
+            const root = document.createElement('span'); root.className = 'breadcrumb-item'; root.textContent = 'PVRKK'; breadcrumbContainer.appendChild(root);
+            history.forEach((entry) => { const item = document.createElement('span'); item.className = 'breadcrumb-item'; item.textContent = entry.name; breadcrumbContainer.appendChild(item); });
         }
-
-        function checkAccess(person) {
-            const isInsideKrishnaLinage = history.some(h => h.name === "Krishna Kamath");
-            const isKrishnaHimself = person.name === "Krishna Kamath";
-            const isRamachandraHimself = person.name === "Ramachandra Kamath";
-            if (isBranchUnlocked || isInsideKrishnaLinage || isKrishnaHimself || isRamachandraHimself) {
-                executeNav(person);
-            } else {
-                openModal(person);
-            }
-        }
-
-        function openModal(person) {
-            pendingNav = person;
-            branchModal.style.display = 'flex';
-            branchPassInput.value = '';
-            document.getElementById('branch-error').style.display = 'none';
-            branchPassInput.focus();
-        }
-
-        function closeModal() {
-            branchModal.style.display = 'none';
-            pendingNav = null;
-        }
-
-        function verifyBranchPasscode() {
-            if (branchPassInput.value === "2026") {
-                isBranchUnlocked = true;
-                const person = pendingNav;
-                closeModal();
-                executeNav(person);
-            } else {
-                document.getElementById('branch-error').style.display = 'block';
-                branchPassInput.value = '';
-                branchPassInput.focus();
-            }
-        }
-
-        branchPassInput.onkeydown = (e) => { if(e.key === 'Enter') verifyBranchPasscode(); };
 
         function executeNav(person) {
-            // Update: history objects now include spouse
             history.push({ name: person.name, spouse: person.spouse, children: person.children });
             render();
         }
 
         function createCard(person) {
-            const card = document.createElement('div');
-            card.className = 'card';
+            const card = document.createElement('div'); card.className = 'card';
             const hasChildren = person.children && person.children.length > 0;
             if (!hasChildren) card.classList.add('no-children');
-            const isInsideKrishnaLinage = history.some(h => h.name === "Krishna Kamath");
-            const isKrishnaHimself = person.name === "Krishna Kamath";
-            const isRamachandraHimself = person.name === "Ramachandra Kamath";
-            if (!isInsideKrishnaLinage && !isKrishnaHimself && !isRamachandraHimself && hasChildren && !isBranchUnlocked) {
-                card.classList.add('locked');
-            }
-            const name = document.createElement('div');
-            name.className = 'name';
-            name.textContent = person.name;
-            card.appendChild(name);
-            if (person.spouse && person.spouse.trim() !== "") {
-                const spouse = document.createElement('div');
-                spouse.className = 'spouse';
-                spouse.textContent = `& ${person.spouse}`;
-                card.appendChild(spouse);
-            }
-            if (hasChildren) {
-                const icon = document.createElement('div');
-                icon.className = 'has-children-icon';
-                icon.textContent = `(${person.children.length} children) ➔`;
-                card.appendChild(icon);
-                card.onclick = () => checkAccess(person);
-            }
+            
+            const name = document.createElement('div'); name.className = 'name'; name.textContent = person.name; card.appendChild(name);
+            if (person.spouse && person.spouse.trim() !== "") { const spouse = document.createElement('div'); spouse.className = 'spouse'; spouse.textContent = `& ${person.spouse}`; card.appendChild(spouse); }
+            if (hasChildren) { const icon = document.createElement('div'); icon.className = 'has-children-icon'; icon.textContent = `(${person.children.length} children) ➔`; card.appendChild(icon); card.onclick = () => executeNav(person); }
             return card;
         }
 
-        function goBack() {
-            history.pop();
-            if (history.length === 0) isBranchUnlocked = false; 
-            render();
-        }
+        function goBack() { history.pop(); render(); }
 
         function render() {
             viewContainer.innerHTML = '';
             updateBreadcrumbs();
             const current = history.length > 0 ? history[history.length - 1] : { name: 'PVRKK', spouse: '', children: familyData.children };
-            const screen = document.createElement('div');
-            screen.className = 'screen active';
+            const screen = document.createElement('div'); screen.className = 'screen active';
             if (history.length > 0) {
-                const backBtn = document.createElement('button');
-                backBtn.className = 'back-btn';
-                backBtn.textContent = '← Back';
-                backBtn.onclick = goBack;
-                screen.appendChild(backBtn);
-                
-                // Update: Include spouse in header display
+                const backBtn = document.createElement('button'); backBtn.className = 'back-btn'; backBtn.textContent = '← Back'; backBtn.onclick = goBack; screen.appendChild(backBtn);
                 const spouseText = current.spouse && current.spouse.trim() !== "" ? ` & ${current.spouse}` : '';
-                const info = document.createElement('div');
-                info.className = 'parent-info';
-                info.innerHTML = `<h2>Children of</h2><span>${current.name}${spouseText}</span>`;
-                screen.appendChild(info);
+                const info = document.createElement('div'); info.className = 'parent-info'; info.innerHTML = `<h2>Children of</h2><span>${current.name}${spouseText}</span>`; screen.appendChild(info);
             }
-            const grid = document.createElement('div');
-            grid.className = 'child-grid';
-            current.children.forEach(child => {
-                grid.appendChild(createCard(child));
-            });
+            const grid = document.createElement('div'); grid.className = 'child-grid';
+            current.children.forEach(child => grid.appendChild(createCard(child)));
             screen.appendChild(grid);
             viewContainer.appendChild(screen);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        render();
     </script>
 </body>
 </html>
