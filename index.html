@@ -18,6 +18,84 @@
             color: #333;
             line-height: 1.6;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Passcode Screen Styles */
+        #login-screen {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-card h2 {
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            font-size: 22px;
+        }
+
+        .login-card p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .passcode-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            outline: none;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .passcode-input:focus {
+            border-color: #333;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #555;
+        }
+
+        #error-msg {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Main Content Styles */
+        #main-content {
+            display: none;
         }
 
         .header {
@@ -282,6 +360,18 @@
 </head>
 <body>
 
+    <!-- Passcode Section: Enter 'pvrkk' to unlock -->
+    <div id="login-screen">
+        <div class="login-card">
+            <h2>PVRKK Family Access</h2>
+            <p>Please enter the passcode to view the family tree.</p>
+            <input type="password" id="passcode-input" class="passcode-input" placeholder="•••••">
+            <button onclick="checkPasscode()" class="login-btn">Unlock</button>
+            <p id="error-msg">Incorrect passcode. Please try again.</p>
+        </div>
+    </div>
+
+    <!-- Application Section -->
     <div id="main-content">
         <div class="header">
             <a href="https://tally.so/r/EklqrL" target="_blank" class="feedback-btn" id="feedback-link">
@@ -301,7 +391,29 @@
     </div>
 
     <script>
-        // Family Data Structure
+        // Authentication Logic: Passcode 'pvrkk'
+        function checkPasscode() {
+            const input = document.getElementById('passcode-input').value;
+            const error = document.getElementById('error-msg');
+            
+            if (input === 'pvrkk') {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                render(); // Start tree render
+            } else {
+                error.style.display = 'block';
+                document.getElementById('passcode-input').value = '';
+            }
+        }
+
+        // Enter key handling
+        document.getElementById('passcode-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPasscode();
+            }
+        });
+
+        // Family Data Structure (Full lineage)
         const familyData = {
             name: "PVRKK",
             children: [{
@@ -370,12 +482,31 @@
                     {
                         name: "Saraswathy Bai", spouse: "Vamana Pai",
                         children: [
+                            {
+                                name: "Jayanand Pai", spouse: "Shyamala",
+                                children: [
+                                    {
+                                        name: "Sudhakar", spouse: "Navaneetha",
+                                        children: [{ name: "Nidhi" }]
+                                    },
+                                    {
+                                        name: "Murali", spouse: "Sumalatha",
+                                        children: [{ name: "Anargha" }]
+                                    }
+                                ]
+                            },
                             { 
                                 name: "Sarvothama Pai", spouse: "Vrindha", 
                                 children: [
                                     { name: "Sudhish Pai", spouse: "Anita", children: [{ name: "Siddharth" }] },
                                     { name: "Sujeet Pai", spouse: "Anupama", children: [{ name: "Akshay" }, { name: "Akshara" }] }
                                 ] 
+                            },
+                            {
+                                name: "Purushothama Pai", spouse: "Radha",
+                                children: [
+                                    { name: "Chandrakanth Pai", children: [] }
+                                ]
                             },
                             {
                                 name: "Kammalakka", spouse: "Lekshmana Pai",
@@ -408,19 +539,6 @@
                                                 children: [{ name: "Parthiv" }, { name: "Parinidhi" }]
                                             }
                                         ]
-                                    }
-                                ]
-                            },
-                            {
-                                name: "Jayananda Pai", spouse: "Shyamala",
-                                children: [
-                                    {
-                                        name: "Sudhakar", spouse: "Navaneetha",
-                                        children: [{ name: "Nidhi" }]
-                                    },
-                                    {
-                                        name: "Murali", spouse: "Sumalatha",
-                                        children: [{ name: "Anargha" }]
                                     }
                                 ]
                             },
@@ -744,7 +862,7 @@
         let history = []; 
         let flatTree = [];
 
-        // Build search index
+        // Kudumb sadasyer search index banano (Bangla Latin: Indexing family members for search)
         function buildFlatTree(node, path = []) {
             if (node.name !== "PVRKK") {
                 flatTree.push({ name: node.name, spouse: node.spouse, children: node.children || [], path: [...path] });
@@ -758,7 +876,7 @@
 
         buildFlatTree(familyData);
 
-        // Search Logic
+        // Search logic
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
             if (term.length < 2) { searchResults.style.display = 'none'; return; }
@@ -808,6 +926,7 @@
 
         function goBack() { history.pop(); render(); }
 
+        // Tree rendering logic (Bangla Latin: Tree render korar logic)
         function render() {
             viewContainer.innerHTML = '';
             updateBreadcrumbs();
@@ -824,8 +943,6 @@
             viewContainer.appendChild(screen);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        render();
     </script>
 </body>
 </html>
